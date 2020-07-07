@@ -2,12 +2,12 @@
 
 // Rename protoc_gen_rust to protoc-gen-rust for aprotoc plugin.
 
-rust_library_host_rlib {
+rust_library_host {
     name: "libprotobuf_codegen",
     crate_name: "protobuf_codegen",
     srcs: ["src/lib.rs"],
     edition: "2015",
-    rlibs: [
+    rustlibs: [
         "libprotobuf",
     ],
 }
@@ -28,7 +28,7 @@ rust_binary_host {
     crate_name: "protoc_gen_rust",
     srcs: ["src/bin/protoc-gen-rust.rs"],
     edition: "2015",
-    rlibs: [
+    rustlibs: [
         "libprotobuf",
         "libprotobuf_codegen",
     ],
