@@ -139,10 +139,8 @@ fn write_file_descriptor_data(
     w.pub_fn(
         "file_descriptor_proto() -> &'static ::protobuf::descriptor::FileDescriptorProto",
         |w| {
-            w.unsafe_expr(|w| {
-                w.block("file_descriptor_proto_lazy.get(|| {", "})", |w| {
-                    w.write_line("parse_descriptor_proto()");
-                });
+            w.block("file_descriptor_proto_lazy.get(|| {", "})", |w| {
+                w.write_line("parse_descriptor_proto()");
             });
         },
     );
@@ -174,12 +172,8 @@ fn gen_file(
 
         // Hack: hard code version number here because Android.bp
         // rust modules cannot pass it though env variable yet.
-        w.write_generated_by("rust-protobuf", "2.14.0");
+        w.write_generated_by("rust-protobuf", "2.16.2");
         w.write_line(&format!("//! Generated file from `{}`", file.get_name()));
-
-        w.write_line("");
-        w.write_line("use protobuf::Message as Message_imported_for_functions;");
-        w.write_line("use protobuf::ProtobufEnum as ProtobufEnum_imported_for_functions;");
         if customize.inside_protobuf != Some(true) {
             w.write_line("");
             w.write_line("/// Generated files are compatible only with the same version");
