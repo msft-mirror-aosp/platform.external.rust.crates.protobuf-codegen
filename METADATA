@@ -9,11 +9,11 @@ third_party {
     type: GIT
     value: "https://github.com/stepancheg/rust-protobuf"
   }
-  version: "2.14.0"
+  version: "2.16.2"
   license_type: NOTICE
   last_upgrade_date {
     year: 2020
-    month: 6
-    day: 3
+    month: 7
+    day: 10
   }
 }
