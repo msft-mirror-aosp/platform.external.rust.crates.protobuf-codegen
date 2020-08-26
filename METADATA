@@ -6,8 +6,8 @@ third_party {
     value: "https://crates.io/crates/protobuf-codegen"
   }
   url {
-    type: GIT
-    value: "https://github.com/stepancheg/rust-protobuf"
+    type: ARCHIVE
+    value: "https://static.crates.io/crates/protobuf-codegen/protobuf-codegen-2.17.0.crate"
   }
   version: "2.17.0"
   license_type: NOTICE
