@@ -58,7 +58,8 @@ impl<'a> CodeWriter<'a> {
         self.write_line("#![allow(clippy::all)]");
         self.write_line("");
         self.write_line("#![allow(unused_attributes)]");
-        self.write_line("#![rustfmt::skip]");
+        // ANDROID CHANGE: comment out rustfmt::skip to fix compilation error.
+        //self.write_line("#![rustfmt::skip]");
         self.write_line("");
         self.write_line("#![allow(box_pointers)]");
         self.write_line("#![allow(dead_code)]");

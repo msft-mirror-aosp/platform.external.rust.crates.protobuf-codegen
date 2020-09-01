@@ -1,0 +1,33 @@
+From 38f7b959fdedb839ce412b7e3faa067d315fc13a Mon Sep 17 00:00:00 2001
+From: Ivan Lozano <ivanlozano@google.com>
+Date: Wed, 26 Aug 2020 15:19:37 -0400
+Subject: [PATCH] Allow generated source to be root module src.
+
+rustfmt::skip breaks compilation when used as a root module source. We
+don't run rustfmt on generated source anyhow.
+See https://github.com/stepancheg/rust-protobuf/issues/493#issuecomment-652874447
+
+Bug: 143953733
+Test: rust_protobuf can generate library variants.
+Change-Id: I0ea47de25c0ddd65781d6509b09ea648d11c4277
+---
+ src/code_writer.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/code_writer.rs b/src/code_writer.rs
+index 8b53bc6..855b785 100644
+--- a/src/code_writer.rs
++++ b/src/code_writer.rs
+@@ -58,7 +58,8 @@ impl<'a> CodeWriter<'a> {
+         self.write_line("#![allow(clippy::all)]");
+         self.write_line("");
+         self.write_line("#![allow(unused_attributes)]");
+-        self.write_line("#![rustfmt::skip]");
++        // ANDROID CHANGE: comment out rustfmt::skip to fix compilation error.
++        //self.write_line("#![rustfmt::skip]");
+         self.write_line("");
+         self.write_line("#![allow(box_pointers)]");
+         self.write_line("#![allow(dead_code)]");
+-- 
+2.28.0.297.g1956fa8f8d-goog
+
