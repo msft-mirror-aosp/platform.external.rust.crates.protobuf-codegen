@@ -12,7 +12,7 @@
 //! * `protoc-rust` crate (codegen which depends on `protoc` binary for parsing)
 //! * `protobuf-codegen-pure` crate
 
-#![deny(intra_doc_link_resolution_failure)]
+#![deny(broken_intra_doc_links)]
 #![deny(missing_docs)]
 
 extern crate protobuf;
@@ -65,6 +65,13 @@ use file::proto_path_to_rust_mod;
 use inside::protobuf_crate_path;
 use scope::FileScope;
 use scope::RootScope;
+
+#[doc(hidden)]
+pub use protobuf_name::ProtobufAbsolutePath;
+#[doc(hidden)]
+pub use protobuf_name::ProtobufIdent;
+#[doc(hidden)]
+pub use protobuf_name::ProtobufRelativePath;
 
 fn escape_byte(s: &mut String, b: u8) {
     if b == b'\n' {
@@ -120,24 +127,33 @@ fn write_file_descriptor_data(
     });
     w.write_line("\";");
     w.write_line("");
-    w.lazy_static_protobuf_path(
+    w.lazy_static(
         "file_descriptor_proto_lazy",
         &format!(
             "{}::descriptor::FileDescriptorProto",
             protobuf_crate_path(customize)
         ),
-        protobuf_crate_path(customize),
+        customize,
     );
     w.write_line("");
     w.def_fn(
-        "parse_descriptor_proto() -> ::protobuf::descriptor::FileDescriptorProto",
+        &format!(
+            "parse_descriptor_proto() -> {}::descriptor::FileDescriptorProto",
+            protobuf_crate_path(customize)
+        ),
         |w| {
-            w.write_line("::protobuf::parse_from_bytes(file_descriptor_proto_data).unwrap()");
+            w.write_line(&format!(
+                "{}::parse_from_bytes(file_descriptor_proto_data).unwrap()",
+                protobuf_crate_path(customize)
+            ));
         },
     );
     w.write_line("");
     w.pub_fn(
-        "file_descriptor_proto() -> &'static ::protobuf::descriptor::FileDescriptorProto",
+        &format!(
+            "file_descriptor_proto() -> &'static {}::descriptor::FileDescriptorProto",
+            protobuf_crate_path(customize)
+        ),
         |w| {
             w.block("file_descriptor_proto_lazy.get(|| {", "})", |w| {
                 w.write_line("parse_descriptor_proto()");
@@ -170,9 +186,7 @@ fn gen_file(
     {
         let mut w = CodeWriter::new(&mut v);
 
-        // Hack: hard code version number here because Android.bp
-        // rust modules cannot pass it though env variable yet.
-        w.write_generated_by("rust-protobuf", "2.16.2");
+        w.write_generated_by("rust-protobuf", "2.17.0"); // ANDROID ported version
         w.write_line(&format!("//! Generated file from `{}`", file.get_name()));
         if customize.inside_protobuf != Some(true) {
             w.write_line("");
@@ -268,4 +282,10 @@ pub fn protoc_gen_rust_main() {
         let customize = Customize::parse_from_parameter(r.parameter).expect("parse options");
         gen(r.file_descriptors, r.files_to_generate, &customize)
     });
+}
+
+/// Used in protobuf-codegen-identical-test
+#[doc(hidden)]
+pub fn proto_name_to_rs(name: &str) -> String {
+    format!("{}.rs", proto_path_to_rust_mod(name))
 }
