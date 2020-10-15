@@ -9,6 +9,7 @@ set -e
 # replace CARGO_PKG_VERSION with version string from METADATA
 SRCFILE=src/lib.rs
 VERSION=`grep version: METADATA | sed -e 's/^.*version: *//'`
+echo "VERSION=$VERSION"
 OLDSTR='env!("CARGO_PKG_VERSION"));'
 NEWSTR="$VERSION); // ANDROID ported version"
 sed -i -e "s:$OLDSTR:$NEWSTR:" $SRCFILE
