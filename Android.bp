@@ -2,7 +2,6 @@
 
 rust_library_host {
     name: "libprotobuf_codegen",
-    // has rustc warnings
     crate_name: "protobuf_codegen",
     srcs: ["src/lib.rs"],
     edition: "2015",
@@ -13,7 +12,6 @@ rust_library_host {
 
 rust_test_host {
     name: "protobuf-codegen_host_test_src_lib",
-    // has rustc warnings
     crate_name: "protobuf_codegen",
     srcs: ["src/lib.rs"],
     test_suites: ["general-tests"],
@@ -26,7 +24,6 @@ rust_test_host {
 
 rust_binary_host {
     name: "protoc-gen-rust",
-    // has rustc warnings
     crate_name: "protoc_gen_rust",
     srcs: ["src/bin/protoc-gen-rust.rs"],
     edition: "2015",
@@ -37,4 +34,4 @@ rust_binary_host {
 }
 
 // dependent_library ["feature_list"]
-//   protobuf-2.18.0
+//   protobuf-2.18.1
