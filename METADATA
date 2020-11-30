@@ -1,5 +1,5 @@
 name: "protobuf-codegen"
-description: "Code generator for rust-protobuf.\n\nIncludes a library and `protoc-gen-rust` binary.\n\nSee `protoc-rust` and `protobuf-codegen-pure` crates.\n"
+description: "Code generator for rust-protobuf.  Includes a library and `protoc-gen-rust` binary.  See `protoc-rust` and `protobuf-codegen-pure` crates."
 third_party {
   url {
     type: HOMEPAGE
@@ -7,13 +7,13 @@ third_party {
   }
   url {
     type: ARCHIVE
-    value: "https://static.crates.io/crates/protobuf-codegen/protobuf-codegen-2.17.0.crate"
+    value: "https://static.crates.io/crates/protobuf-codegen/protobuf-codegen-2.18.1.crate"
   }
-  version: "2.17.0"
+  version: "2.18.1"
   license_type: NOTICE
   last_upgrade_date {
     year: 2020
-    month: 8
-    day: 12
+    month: 11
+    day: 24
   }
 }
