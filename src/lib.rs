@@ -144,7 +144,7 @@ fn write_file_descriptor_data(
         ),
         |w| {
             w.write_line(&format!(
-                "{}::parse_from_bytes(file_descriptor_proto_data).unwrap()",
+                "{}::Message::parse_from_bytes(file_descriptor_proto_data).unwrap()",
                 protobuf_crate_path(customize)
             ));
         },
@@ -192,7 +192,7 @@ fn gen_file(
     {
         let mut w = CodeWriter::new(&mut v);
 
-        w.write_generated_by("rust-protobuf", "2.18.1");
+        w.write_generated_by("rust-protobuf", "2.20.0");
         w.write_line(&format!("//! Generated file from `{}`", file.get_name()));
         if customize.inside_protobuf != Some(true) {
             w.write_line("");
