@@ -12,7 +12,7 @@
 
 [package]
 name = "protobuf-codegen"
-version = "2.18.1"
+version = "2.20.0"
 authors = ["Stepan Koltsov <stepan.koltsov@gmail.com>"]
 description = "Code generator for rust-protobuf.\n\nIncludes a library and `protoc-gen-rust` binary.\n\nSee `protoc-rust` and `protobuf-codegen-pure` crates.\n"
 homepage = "https://github.com/stepancheg/rust-protobuf/"
@@ -34,4 +34,4 @@ name = "protobuf-bin-gen-rust-do-not-use"
 path = "src/bin/protobuf-bin-gen-rust-do-not-use.rs"
 test = false
 [dependencies.protobuf]
-version = "=2.18.1"
+version = "=2.20.0"
