@@ -61,10 +61,11 @@ use self::code_writer::CodeWriter;
 use self::enums::*;
 use self::extensions::*;
 use self::message::*;
-use file::proto_path_to_rust_mod;
 use inside::protobuf_crate_path;
 use scope::FileScope;
 use scope::RootScope;
+
+use crate::file::proto_path_to_rust_mod;
 
 #[doc(hidden)]
 pub use protobuf_name::ProtobufAbsolutePath;
@@ -143,7 +144,7 @@ fn write_file_descriptor_data(
         ),
         |w| {
             w.write_line(&format!(
-                "{}::parse_from_bytes(file_descriptor_proto_data).unwrap()",
+                "{}::Message::parse_from_bytes(file_descriptor_proto_data).unwrap()",
                 protobuf_crate_path(customize)
             ));
         },
@@ -162,12 +163,17 @@ fn write_file_descriptor_data(
     );
 }
 
+struct GenFileResult {
+    compiler_plugin_result: compiler_plugin::GenResult,
+    mod_name: String,
+}
+
 fn gen_file(
     file: &FileDescriptorProto,
     _files_map: &HashMap<&str, &FileDescriptorProto>,
     root_scope: &RootScope,
     customize: &Customize,
-) -> Option<compiler_plugin::GenResult> {
+) -> GenFileResult {
     // TODO: use it
     let mut customize = customize.clone();
     // options specified in invocation have precedence over options specified in file
@@ -186,7 +192,7 @@ fn gen_file(
     {
         let mut w = CodeWriter::new(&mut v);
 
-        w.write_generated_by("rust-protobuf", "2.17.0"); // ANDROID ported version
+        w.write_generated_by("rust-protobuf", "2.20.0");
         w.write_line(&format!("//! Generated file from `{}`", file.get_name()));
         if customize.inside_protobuf != Some(true) {
             w.write_line("");
@@ -221,10 +227,28 @@ fn gen_file(
         }
     }
 
-    Some(compiler_plugin::GenResult {
-        name: format!("{}.rs", proto_path_to_rust_mod(file.get_name())),
+    GenFileResult {
+        compiler_plugin_result: compiler_plugin::GenResult {
+            name: format!("{}.rs", proto_path_to_rust_mod(file.get_name())),
+            content: v,
+        },
+        mod_name: proto_path_to_rust_mod(file.get_name()).into_string(),
+    }
+}
+
+fn gen_mod_rs(mods: &[String]) -> compiler_plugin::GenResult {
+    let mut v = Vec::new();
+    let mut w = CodeWriter::new(&mut v);
+    w.comment("@generated");
+    w.write_line("");
+    for m in mods {
+        w.write_line(&format!("pub mod {};", m));
+    }
+    drop(w);
+    compiler_plugin::GenResult {
+        name: "mod.rs".to_owned(),
         content: v,
-    })
+    }
 }
 
 // This function is also used externally by cargo plugin
@@ -246,13 +270,23 @@ pub fn gen(
 
     let all_file_names: Vec<&str> = file_descriptors.iter().map(|f| f.get_name()).collect();
 
+    let mut mods = Vec::new();
+
     for file_name in files_to_generate {
         let file = files_map.get(&file_name[..]).expect(&format!(
             "file not found in file descriptors: {:?}, files: {:?}",
             file_name, all_file_names
         ));
-        results.extend(gen_file(file, &files_map, &root_scope, customize));
+
+        let gen_file_result = gen_file(file, &files_map, &root_scope, customize);
+        results.push(gen_file_result.compiler_plugin_result);
+        mods.push(gen_file_result.mod_name);
     }
+
+    if customize.gen_mod_rs.unwrap_or(false) {
+        results.push(gen_mod_rs(&mods));
+    }
+
     results
 }
 
