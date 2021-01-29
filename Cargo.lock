@@ -2,13 +2,13 @@
 # It is not intended for manual editing.
 [[package]]
 name = "protobuf"
-version = "2.18.1"
+version = "2.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da78e04bc0e40f36df43ecc6575e4f4b180e8156c4efd73f13d5619479b05696"
+checksum = "86473d5f16580f10b131a0bf0afb68f8e029d1835d33a00f37281b05694e5312"
 
 [[package]]
 name = "protobuf-codegen"
-version = "2.18.1"
+version = "2.20.0"
 dependencies = [
  "protobuf",
 ]
