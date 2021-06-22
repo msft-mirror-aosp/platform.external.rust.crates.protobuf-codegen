@@ -57,4 +57,4 @@ rust_binary_host {
 }
 
 // dependent_library ["feature_list"]
-//   protobuf-2.23.0
+//   protobuf-2.24.1
