@@ -24,7 +24,7 @@ rust_library_host {
     name: "libprotobuf_codegen",
     crate_name: "protobuf_codegen",
     cargo_env_compat: true,
-    cargo_pkg_version: "2.25.1",
+    cargo_pkg_version: "2.27.1",
     srcs: ["src/lib.rs"],
     edition: "2015",
     rustlibs: [
@@ -36,7 +36,7 @@ rust_test_host {
     name: "protobuf-codegen_test_src_lib",
     crate_name: "protobuf_codegen",
     cargo_env_compat: true,
-    cargo_pkg_version: "2.25.1",
+    cargo_pkg_version: "2.27.1",
     srcs: ["src/lib.rs"],
     test_suites: ["general-tests"],
     auto_gen_config: true,
@@ -53,7 +53,7 @@ rust_binary_host {
     name: "protoc-gen-rust",
     crate_name: "protoc_gen_rust",
     cargo_env_compat: true,
-    cargo_pkg_version: "2.25.1",
+    cargo_pkg_version: "2.27.1",
     srcs: ["src/bin/protoc-gen-rust.rs"],
     edition: "2015",
     rustlibs: [
