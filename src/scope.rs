@@ -1,10 +1,3 @@
-use protobuf::descriptor::DescriptorProto;
-use protobuf::descriptor::EnumDescriptorProto;
-use protobuf::descriptor::EnumValueDescriptorProto;
-use protobuf::descriptor::FieldDescriptorProto;
-use protobuf::descriptor::FileDescriptorProto;
-use protobuf::descriptor::OneofDescriptorProto;
-
 use crate::field::rust_field_name_for_protobuf_field_name;
 use crate::file::proto_path_to_rust_mod;
 use crate::protobuf_name::ProtobufAbsolutePath;
@@ -14,6 +7,12 @@ use crate::rust;
 use crate::rust_name::RustIdent;
 use crate::rust_name::RustIdentWithPath;
 use crate::syntax::Syntax;
+use protobuf::descriptor::DescriptorProto;
+use protobuf::descriptor::EnumDescriptorProto;
+use protobuf::descriptor::EnumValueDescriptorProto;
+use protobuf::descriptor::FieldDescriptorProto;
+use protobuf::descriptor::FileDescriptorProto;
+use protobuf::descriptor::OneofDescriptorProto;
 
 pub(crate) struct RootScope<'a> {
     pub file_descriptors: &'a [FileDescriptorProto],
@@ -396,7 +395,7 @@ impl<'a> EnumWithScope<'a> {
             .get_value()
             .iter()
             .map(|v| EnumValueWithContext {
-                _en: self.clone(),
+                en: self.clone(),
                 proto: v,
             })
             .collect()
@@ -413,7 +412,7 @@ impl<'a> EnumWithScope<'a> {
 
 #[derive(Clone, Debug)]
 pub(crate) struct EnumValueWithContext<'a> {
-    _en: EnumWithScope<'a>,
+    pub en: EnumWithScope<'a>,
     pub proto: &'a EnumValueDescriptorProto,
 }
 
