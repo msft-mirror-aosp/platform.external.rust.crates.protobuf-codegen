@@ -1,7 +1,5 @@
 //! Oneof-related codegen functions.
 
-use std::collections::HashSet;
-
 use code_writer::CodeWriter;
 use field::FieldElem;
 use field::FieldGen;
@@ -16,6 +14,7 @@ use scope::OneofWithContext;
 use scope::RootScope;
 use scope::WithScope;
 use serde;
+use std::collections::HashSet;
 use Customize;
 
 // oneof one { ... }
@@ -79,12 +78,12 @@ impl<'a> OneofField<'a> {
 
 #[derive(Clone)]
 pub(crate) struct OneofVariantGen<'a> {
-    _oneof: &'a OneofGen<'a>,
-    _variant: OneofVariantWithContext<'a>,
+    oneof: &'a OneofGen<'a>,
+    variant: OneofVariantWithContext<'a>,
     oneof_field: OneofField<'a>,
     pub field: FieldGen<'a>,
     path: String,
-    _customize: Customize,
+    customize: Customize,
 }
 
 impl<'a> OneofVariantGen<'a> {
@@ -96,8 +95,8 @@ impl<'a> OneofVariantGen<'a> {
         customize: Customize,
     ) -> OneofVariantGen<'a> {
         OneofVariantGen {
-            _oneof: oneof,
-            _variant: variant.clone(),
+            oneof,
+            variant: variant.clone(),
             field: field.clone(),
             path: format!(
                 "{}::{}",
@@ -110,7 +109,7 @@ impl<'a> OneofVariantGen<'a> {
                 field.oneof().elem.clone(),
                 oneof.message.root_scope,
             ),
-            _customize: customize,
+            customize,
         }
     }
 
@@ -129,6 +128,7 @@ pub(crate) struct OneofGen<'a> {
     message: &'a MessageGen<'a>,
     pub oneof: OneofWithContext<'a>,
     type_name: RustType,
+    lite_runtime: bool,
     customize: Customize,
 }
 
@@ -143,6 +143,7 @@ impl<'a> OneofGen<'a> {
             message,
             oneof,
             type_name: RustType::Oneof(rust_name.to_string()),
+            lite_runtime: message.lite_runtime,
             customize: customize.clone(),
         }
     }
