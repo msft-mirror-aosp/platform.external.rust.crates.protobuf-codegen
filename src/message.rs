@@ -1,5 +1,9 @@
-use std::fmt;
-
+use super::code_writer::*;
+use super::customize::customize_from_rustproto_for_message;
+use super::customize::Customize;
+use super::enums::*;
+use super::field::*;
+use super::rust_types_values::*;
 use file_descriptor::file_descriptor_proto_expr;
 use inside::protobuf_crate_path;
 use oneof::OneofGen;
@@ -11,12 +15,7 @@ use scope::RootScope;
 use scope::WithScope;
 use serde;
 
-use super::code_writer::*;
-use super::customize::customize_from_rustproto_for_message;
-use super::customize::Customize;
-use super::enums::*;
-use super::field::*;
-use super::rust_types_values::*;
+use std::fmt;
 
 /// Protobuf message Rust type name
 #[derive(Debug, Clone, PartialEq, Eq)]
