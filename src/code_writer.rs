@@ -1,9 +1,8 @@
 // TODO: used by grpc-rust, should move it into separate crate.
 #![doc(hidden)]
 
-use std::io::Write;
-
 use inside::protobuf_crate_path;
+use std::io::Write;
 use Customize;
 
 /// Field visibility.
