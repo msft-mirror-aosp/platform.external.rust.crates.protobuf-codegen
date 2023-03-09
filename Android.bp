@@ -30,6 +30,8 @@ rust_library_host {
     rustlibs: [
         "libprotobuf",
     ],
+    product_available: true,
+    vendor_available: true,
 }
 
 rust_test_host {
@@ -60,4 +62,6 @@ rust_binary_host {
         "libprotobuf",
         "libprotobuf_codegen",
     ],
+    product_available: true,
+    vendor_available: true,
 }
