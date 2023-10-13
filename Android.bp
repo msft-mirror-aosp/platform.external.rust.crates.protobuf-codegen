@@ -36,8 +36,6 @@ rust_library_host {
         "libtempfile",
         "libthiserror",
     ],
-    product_available: true,
-    vendor_available: true,
 }
 
 rust_test_host {
@@ -80,6 +78,4 @@ rust_binary_host {
         "libtempfile",
         "libthiserror",
     ],
-    product_available: true,
-    vendor_available: true,
 }
