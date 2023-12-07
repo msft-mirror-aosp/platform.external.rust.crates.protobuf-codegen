@@ -1,9 +1,0 @@
-{
-  "run": true,
-  "tests": true,
-  "name-suffix": "_deprecated",
-  "dep-suffixes": {
-    "protobuf": "_deprecated",
-    "protobuf_codegen": "_deprecated"
-  }
-}
