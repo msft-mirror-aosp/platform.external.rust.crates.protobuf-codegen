@@ -54,7 +54,7 @@ pub(crate) fn gen_file(
     let lite_runtime = customize.for_elem.lite_runtime.unwrap_or(false);
 
     let v = CodeWriter::with(|w| {
-        w.write_generated_by("rust-protobuf", "3.2.0", parser);
+        w.write_generated_by("rust-protobuf", env!("CARGO_PKG_VERSION"), parser);
 
         w.write_line("");
         w.write_line(&format!(
